@@ -1,0 +1,87 @@
+﻿@page "/"
+@using System.Text.Json
+@inject HttpClient httpClient
+@inject IConfiguration config
+<PageTitle>Home</PageTitle>
+
+<div id="root">
+    <div class="layout">
+        <HeadingComponent />
+        <div class="container" role="main">
+            <div class="chatRoot">
+                <div class="chatContainer">
+                    <div class="chatMessageStream" role="log" style="margin-bottom: 0px;">
+                        @foreach (ChatItemBase item in chatHistory)
+                        {
+                            if (item is ChatItemUser)
+                            {
+                                <UserMessageComponent Content="@item.Content"></UserMessageComponent>
+                            }
+                            else if (item is ChatItemAnswer)
+                            {
+                                <AnswerComponent Content="@item.Content"></AnswerComponent>
+                            }
+                            else if (item is ChatItemError)
+                            {
+                                <ErrorMessageComponent Content="@item.Content"></ErrorMessageComponent>
+                            }
+                        }
+                        @if (requestInProgress)
+                        {
+                            <AnswerComponent Content="Generating answer..."></AnswerComponent>
+                        }
+                    </div>
+                    <div class="ms-Stack chatInput css-118">
+                        <QuestionInputComponent OnSend="HandleSendAsync" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ChatItemBase> chatHistory = new List<ChatItemBase>();
+    private bool requestInProgress;
+    private async void HandleSendAsync(string input)
+    {
+        chatHistory.Add(new ChatItemUser() { Content = input });
+        StateHasChanged();
+        UserRequest req = new UserRequest()
+            {
+                UserId = "stevesmith@contoso.com",
+                Prompt = input,
+                SessionId = "12345678",
+                TenantId = "00001",
+            };
+        JsonContent content = JsonContent.Create(req);
+        try
+        {
+            requestInProgress = true;
+            StateHasChanged();
+            var apiPath = $"{config["Server:RootPath"]}/ChatProvider";
+            var response = await httpClient.PostAsync(apiPath, content);
+            Console.WriteLine(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                chatHistory.Add(new ChatItemError() { Content = response.ReasonPhrase });
+            }
+            else
+            {
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                chatHistory.Add(new ChatItemAnswer() { Content = result });
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+            chatHistory.Add(new ChatItemError() { Content = ex.Message });
+        }
+        finally
+        {
+            requestInProgress = false;
+            StateHasChanged();
+        }
+    }
+}
+
