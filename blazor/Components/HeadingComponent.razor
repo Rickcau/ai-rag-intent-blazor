@@ -1,0 +1,17 @@
+﻿@inject IConfiguration config
+
+<header class="header" role="banner">
+    <div class="headerRoot">
+        <div class="innerHeaderRoot">
+            <img src="/assets/Contoso.svg" class="headerIcon" aria-hidden="true">
+            <a class="headerTitleContainer" href="#/">
+                <h1 class="headerTitle">
+                    @config["CompanyName"]
+                </h1>
+            </a>
+        </div>
+    </div>
+</header>
+@code {
+
+}
