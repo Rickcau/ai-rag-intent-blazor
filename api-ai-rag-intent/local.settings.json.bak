@@ -11,6 +11,10 @@
     "AISearchSemanticConfigName": "<AISearchSemanticConfigName>",
     "AISearchURL": "<AISearchURL>",
     "AISearchKey": "<AISearchKey>"
+  },
+  // Adding CORS policy to allow running this locally.
+  "Host": {
+      "CORS": "*"
   }
 }
 
