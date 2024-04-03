@@ -10,6 +10,11 @@
         <div class="container" role="main">
             <div class="chatRoot">
                 <div class="chatContainer">
+                    <div class="chatEmptyState">
+                        <img src="/assets/Contoso.svg" class="chatIcon" aria-hidden="true">
+                        <h1 class="chatEmptyStateTitle">Start chatting</h1>
+                        <h2 class="chatEmptyStateSubtitle">This chatbot is configured to answer your questions</h2>
+                    </div>
                     <div class="chatMessageStream" role="log" style="margin-bottom: 0px;">
                         @foreach (ChatItemBase item in chatHistory)
                         {
@@ -19,7 +24,7 @@
                             }
                             else if (item is ChatItemAnswer)
                             {
-                                <AnswerComponent Content="@item.Content"></AnswerComponent>
+                                <AnswerComponent Content="@item.HtmlContent"></AnswerComponent>
                             }
                             else if (item is ChatItemError)
                             {
@@ -31,7 +36,7 @@
                             <AnswerComponent Content="Generating answer..."></AnswerComponent>
                         }
                     </div>
-                    <div class="ms-Stack chatInput css-118">
+                    <div class="chatInput">
                         <QuestionInputComponent OnSend="HandleSendAsync" />
                     </div>
                 </div>

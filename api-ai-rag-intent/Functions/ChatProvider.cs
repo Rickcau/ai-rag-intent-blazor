@@ -76,7 +76,35 @@ namespace api_ai_rag_intent.Functions
                         // Now that I know the intent of the question is graphql related, I could just call the plugin directly
                         // but, since I have AutoInvokeKernelFunctions enabled I can just let SK detect that it needs to call the funciton and let it do it.
                         // Now, it would be more performant to just call it directly as their is additional overhead with SK searching the plugin collection etc
-                        _chatHistory.AddUserMessage(chatRequest.prompt);
+                        //    chatHistory.AddSystemMessage($@"Return in the following format:
+                        //- graphql: Use this intent to answer questions about GraphQL queries.
+                        //- documents: Use this intent to answer questions about Contoso Employee Handbook.
+                        //- not_found: Use this intent if you can't find a suitable answer
+
+                        //[Examples for graphql type of questions]
+                        //User question: top 10 active pools
+                        //Intent: graphql
+                        //User question: Retrieve 10 most liquid pools
+                        //Intent: graphql
+                        //User question: top 10 active pools ordered by USD volume
+                        //Intent: graphql
+
+                        //[Examples for documents type of questions]
+                        //Intent: documents
+                        //User question: Tell me how performance reviews are conducted
+                        //Intent: documents
+                        //User question: What is our mission ?
+                        //Intent: documents
+                        //User question: What are my Healthcare Benefits for Northwinds ?
+                        //Intent: documents
+                        //Per user query what is the Intent?
+                        //Intent:");
+                        //_chatHistory.AddSystemMessage($@"Add a newline for each pool. Here is an example:
+                        //    Here are the top 2 active pools:
+                        //    1. 0x5d342c
+                        //    2. 0xb0cdd
+                        //    ");
+                        _chatHistory.AddUserMessage(chatRequest.prompt +" Please add newlines and formatting so each item is on a separate line");
                         Console.WriteLine("Intent: graphql");
                         break;
                     }
