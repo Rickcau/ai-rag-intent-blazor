@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api-ai-rag-intent", "api-ai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChat", "blazor\BlazorChat.csproj", "{731B4543-6EE6-411A-80AE-9B78E3068128}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChatWA", "blazor-wa\BlazorChatWA.csproj", "{620FDA4B-753E-4C9F-9F69-EF527E3365F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{731B4543-6EE6-411A-80AE-9B78E3068128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{731B4543-6EE6-411A-80AE-9B78E3068128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{731B4543-6EE6-411A-80AE-9B78E3068128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{620FDA4B-753E-4C9F-9F69-EF527E3365F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{620FDA4B-753E-4C9F-9F69-EF527E3365F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{620FDA4B-753E-4C9F-9F69-EF527E3365F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{620FDA4B-753E-4C9F-9F69-EF527E3365F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,28 @@
+﻿<div class="chatMessageGpt">
+    <div class="answerContainer" tabindex="0">
+        <div>
+            <div>
+                <div>
+                    <div class="answerText">
+                        <pre class="answerText">
+                          @Content
+                        </pre>
+                    </div>
+                </div>
+                <div class="answerHeader">
+                </div>
+            </div>
+        </div>
+        <div class="answerFooter">
+            <div class="answerDisclaimerContainer">
+                <span class="answerDisclaimer">
+                    AI-generated content may be incorrect
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string? Content { get; set; }
+}

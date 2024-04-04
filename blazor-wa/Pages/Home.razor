@@ -1,0 +1,107 @@
+﻿@page "/"
+@using System.Text.Json
+@inject HttpClient httpClient
+@inject IConfiguration config
+<PageTitle>Home</PageTitle>
+
+<div id="root">
+    <div class="layout">
+        <HeadingComponent />
+        <div class="container" role="main">
+            <div class="chatRoot">
+                <div class="chatContainer">
+                    @if (startInProgress)
+                    {
+                    <div class="chatEmptyState">
+                        <img src="/assets/Contoso.svg" class="chatIcon" aria-hidden="true">
+                        <h1 class="chatEmptyStateTitle">Start chatting</h1>
+                        <h2 class="chatEmptyStateSubtitle">This chatbot is configured to answer your questions</h2>
+                    </div >
+                    }
+                    <div class="chatMessageStream" role="log" style="margin-bottom: 0px;">
+                        @foreach (ChatItemBase item in chatHistory)
+                        {
+                            if (item is ChatItemUser)
+                            {
+                                <UserMessageComponent Content="@item.Content"></UserMessageComponent>
+                            }
+                            else if (item is ChatItemAnswer)
+                            {
+                                <AnswerComponent Content="@item.Content"></AnswerComponent>
+                            }
+                            else if (item is ChatItemError)
+                            {
+                                <ErrorMessageComponent Content="@item.Content"></ErrorMessageComponent>
+                            }
+                        }
+                        @if (requestInProgress)
+                        {
+                            <AnswerComponent Content="Generating answer..."></AnswerComponent>
+                        }
+                    </div>
+                    <div class="chatInput">
+                        <div role="button" tabindex="0" aria-label="Clear session" @onclick="ClearChat">
+                            <svg class="clearChatBroom" aria-hidden="true" fill="currentColor" width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="@(chatHistory.Count > 0 ? "background: radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%);" : "background: rgb(189, 189, 189);")">
+                                <path d="M17.91 2.18c.2.2.2.51 0 .7l-5.32 5.33a4.5 4.5 0 0 1-.34 6l-.66.66-2.09 3.48a.5.5 0 0 1-.78.1l-7.07-7.08a.5.5 0 0 1 .1-.78L5.22 8.5l.66-.66a4.5 4.5 0 0 1 5.99-.34l5.32-5.32c.2-.2.51-.2.71 0ZM6.24 8.9l4.95 4.95.36-.35A3.5 3.5 0 1 0 6.6 8.55l-.36.35Zm-.78.63L2.8 11.12l6.16 6.17 1.6-2.66-5.11-5.1Z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                            <QuestionInputComponent OnSend="HandleSendAsync" />
+                    </div>               
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ChatItemBase> chatHistory = new List<ChatItemBase>();
+    private bool requestInProgress;
+    private bool startInProgress = true;
+    private async void HandleSendAsync(string input)
+    {
+        chatHistory.Add(new ChatItemUser() { Content = input });
+        StateHasChanged();
+        UserRequest req = new UserRequest()
+            {
+                UserId = "stevesmith@contoso.com",
+                Prompt = input,
+                SessionId = "12345678",
+                TenantId = "00001",
+            };
+        JsonContent content = JsonContent.Create(req);
+        try
+        {
+            requestInProgress = true;
+            startInProgress = false;
+            StateHasChanged();
+            var apiPath = $"{config["Server:RootPath"]}/ChatProvider";
+            var response = await httpClient.PostAsync(apiPath, content);
+            Console.WriteLine(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                chatHistory.Add(new ChatItemError() { Content = response.ReasonPhrase });
+            }
+            else
+            {
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                chatHistory.Add(new ChatItemAnswer() { Content = result });
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+            chatHistory.Add(new ChatItemError() { Content = ex.Message });
+        }
+        finally
+        {
+            requestInProgress = false;
+            StateHasChanged();
+        }
+    }
+    private void ClearChat()
+    {
+        chatHistory.Clear();
+        startInProgress = true;
+    }
+}
+
