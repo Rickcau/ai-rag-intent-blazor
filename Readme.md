@@ -1,7 +1,8 @@
 # api-ai-rag-intent-blazor
 
 ## Summary
-In this example we leverage a Blazor Web App as the front which leverages our Azure Function for AI Chat Services.  Big thanks to Bill Reiss for the Blazor App.  We will continue to update the app with additional features. 
+In this example we leverage a Blazor Web App as the front which leverages our Azure Function for AI Chat Services.  Big thanks to Bill Reiss for the Blazor App (Web Assembly).  We will also be adding a Blazor Server Side Web App and additional features over time.
+
 ## Goal
 The goal is to provide a super simple UI (somthing other than React, NextJS or others), hence is why we decided on Blazor. We will make use of **Intent Recognition** in conjunction with RAG (Retreval Augmentation Generation) using Semantic Kernel (1.4.0) an Isolated Azure Function as well as Speech Service.  It leverages all the common patterns e.g. dependecy injection, SK Plugins/Functions, AutoInvoke etc. 
 
