@@ -129,8 +129,7 @@ namespace api_ai_rag_intent.Functions
             HttpResponseData response = req.CreateResponse(HttpStatusCode.OK);
             try
             {
-                var notfound = @$"Your question isn't related to materials I have indexed or related to subgraph queries, so I am unable to help.  
-                             Please ask a question related to documents I have indexed or something like find the top 10 active pools.";
+                var notfound = @$"Your question isn't related to materials I have indexed or related to subgraph queries, so I am unable to help. Please ask a question related to documents I have indexed or something like find the top 10 active pools.";
                 await response.WriteStringAsync(result?.Content ?? notfound);
             }
             catch (Exception ex)
