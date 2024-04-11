@@ -34,7 +34,7 @@
         </svg>
 
         <div class="loading-progress-text">
-</div>
+        </div>
 
     </div>
 
@@ -43,15 +43,23 @@
 
         An unhandled error has occurred.
         <a href="" class="reload">
-Reload</a>
+            Reload
+        </a>
 
         <a class="dismiss">
-🗙</a>
+            🗙
+        </a>
 
     </div>
 
     <script src="_framework/blazor.webassembly.js">
-</script>
+    </script>
+
+    <script>
+        window.triggerFileInputClick = (element) => {
+            element.click();
+        };
+    </script>
 
 </body>
 
