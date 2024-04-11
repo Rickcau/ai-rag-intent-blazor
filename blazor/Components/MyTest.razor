@@ -1,44 +1,36 @@
 ﻿@using Azure.Storage.Blobs;
 @using Azure.Storage.Blobs.Models;
+@using MudBlazor;
+
 @page "/fileupload2"
 
-
-
-
-
-<p>
-    <label>
-        <input type="file" onchange="@OnInputFileChange" />
-        <InputFile class="shareButton" style="display:none;" OnChange="@OnInputFileChange" />
-    </label>
-</p>
-
-<div class="form-group row">
-    <label for="image" class="col-md-2 col-form-label">Image:</label>
-    <div class="col-md-10">
-        <p>This is a test</p>
-    </div>
+<div>
+<H1>Document Translation</H1>
+<MudGrid>
+    <MudItem xs="12" md="6" lg="4"> 
+        <MudField Label="Input Language" Variant="Variant.Outlined">
+            <input type="text" @bind-value="inputLang"/><span class="ml-3"></span>
+        </MudField>
+    </MudItem>  
+    <MudItem xs="12" md="6" lg="4"> 
+        <MudField Label="Output Language" Variant="Variant.Outlined">
+            <input type="text" @bind-value="outputLang"/><span class="ml-3"></span>
+        </MudField>
+    </MudItem>
+    <MudItem xs="12" md="6" lg="4"> 
+        <MudField Label="Select File & Upload" Width="100%" Variant="Variant.Outlined">
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+            <MudFab StartIcon="@Icons.Material.Filled.Save" Disabled="true" />
+        </MudField>
+    </MudItem>  
+</MudGrid>
 </div>
 
 @code {
-    private async Task OnInputFileChange(InputFileChangeEventArgs e)
-    {
-        var file = e.GetMultipleFiles()[0];
-        var name = file.Name;
-        var type = file.ContentType;
-
-        var connectionstring = "connection_string";
-        // BlobServiceClient blobServiceClient = new BlobServiceClient(connectionstring);
-        // BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("container_name");
-        // await blobContainerClient.CreateIfNotExistsAsync();
-        // BlobClient blobClent = blobContainerClient.GetBlobClient(name);
-        // BlobHttpHeaders httpheaders = new BlobHttpHeaders()
-        //     {
-        //         ContentType = type
-        //     };
-        // var res = await blobClent.UploadAsync(file.OpenReadStream(), httpheaders);
-    }
+    RenderFragment content = null;
+    RenderFragment rf1 = @<MudText Typo="@Typo.h6">I Am Field</MudText>;
+    string color="#6cf014";
+    string mytest="test";
+    string inputLang="English";
+    string outputLang="Spanish";
 }
-
-
-<input type="file" onChange={this.handleFile.bind(this)} />
