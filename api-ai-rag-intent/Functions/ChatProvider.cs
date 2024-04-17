@@ -44,7 +44,7 @@ namespace api_ai_rag_intent.Functions
             Console.WriteLine("Example 1: top 10 active pools");
             Console.WriteLine("Example 2: Retrieve 10 most liquid pools");
 
-            _chatHistory.Clear();
+            //_chatHistory.Clear();
             _logger.LogInformation("C# HTTP SentimentAnalysis trigger function processed a request.");
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -60,13 +60,14 @@ namespace api_ai_rag_intent.Functions
             // this allows you to reduce the token useage and save you TPM and dollars
             switch (intent)
             {
-                case "documents":
+                case "dbquery":
                     {
                         Console.WriteLine("Intent: documents");
                         Helper.GetEnvironmentVariable("ApiKey");
-                        var function = _kernel.Plugins.GetFunction("AzureAISearchPlugin", "SemanticHybridSearch");
-                        var content = (await _kernel.InvokeAsync(function, new() { ["query"] = chatRequest.prompt, ["index"] = _aiSearchIndex, ["semanticconfigname"] = _semanticSearchConfigName })).ToString();
-                        _chatHistory.AddUserMessage("If [Title:] is included in the content you are summarizing please include that at the end of your summary.");
+                        //  SimpleVectorSearch  SemanticHybridSearch, HybridSearchAsync
+                        var function = _kernel.Plugins.GetFunction("AzureAISearchPlugin", "HybridSearch2");
+                        // var content = (await _kernel.InvokeAsync(function, new() { ["query"] = chatRequest.prompt, ["index"] = _aiSearchIndex, ["semanticconfigname"] = _semanticSearchConfigName })).ToString();
+                        var content = (await _kernel.InvokeAsync(function, new() { ["query"] = chatRequest.prompt, ["index"] = _aiSearchIndex, ["k"] = 1000 })).ToString();
                         _chatHistory.AddUserMessage(content);
                         _chatHistory.AddUserMessage(chatRequest.prompt);
                         break;
@@ -120,10 +121,12 @@ namespace api_ai_rag_intent.Functions
 
             if (intent != "not_found")
             {
+                // ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
                 result = await _chat.GetChatMessageContentAsync(
                     _chatHistory,
-                    executionSettings: new OpenAIPromptExecutionSettings { Temperature = 0.8, TopP = 0.0, ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions },
+                    executionSettings: new OpenAIPromptExecutionSettings { Temperature = 0.8, TopP = 0.0 },
                     kernel: _kernel);
+                _chatHistory.Clear();
             }
 
             HttpResponseData response = req.CreateResponse(HttpStatusCode.OK);

@@ -56,6 +56,42 @@ namespace api_ai_rag_intent.Plugins
             return await this._searchService.SemanticHybridSearchAsync(embedding, query, index, semanticconfigname) ?? string.Empty;
         }
 
+        [KernelFunction]
+        [Description("FetchFormCSV: When a user asks question about moniker, db_id or db_name, use this function to perform the search")]
+        public async Task<string> HybridSearchAsync(
+          string query,
+          string index,
+          int k = 100,
+          List<string>? searchFields = null,
+          CancellationToken cancellationToken = default)
+        {
+            // Convert string query to vector
+#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+            ReadOnlyMemory<float> embedding = await this._textEmbeddingGenerationService.GenerateEmbeddingAsync(query, cancellationToken: cancellationToken);
+#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
+            // Perform simple search
+            return await this._searchService.HybridSearchAsync(embedding, query, index, k) ?? string.Empty;
+        }
+
+        [KernelFunction]
+        [Description("FetchFormCSV: When a user asks question about moniker, db_id or db_name, use this function to perform the search")]
+        public async Task<string> HybridSearch2Async(
+          string query,
+          string index,
+          int k = 100,
+          List<string>? searchFields = null,
+          CancellationToken cancellationToken = default)
+        {
+            // Convert string query to vector
+#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+            ReadOnlyMemory<float> embedding = await this._textEmbeddingGenerationService.GenerateEmbeddingAsync(query, cancellationToken: cancellationToken);
+#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
+            // Perform simple search
+            return await this._searchService.HybridSearch2Async(embedding, query, index, k) ?? string.Empty;
+        }
+
 
     }
 }

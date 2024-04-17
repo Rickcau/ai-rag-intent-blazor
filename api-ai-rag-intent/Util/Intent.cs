@@ -17,33 +17,24 @@ namespace api_ai_rag_intent.Util
             ChatHistory chatHistory = new ChatHistory();
             var whatistheintent = "not_found"; // default
             chatHistory.AddSystemMessage($@"Return the intent of the user.The intent must be one of the following strings:
-                    - graphql: Use this intent to answer questions about GraphQL queries.
-                    - documents: Use this intent to answer questions about Contoso Employee Handbook.
+                    - dbquery: Use this intent to answer questions about categories, moniker, db_id or db_name queries.
                     - not_found: Use this intent if you can't find a suitable answer
             
-                    [Examples for graphql type of questions]
-                    User question: top 10 active pools
-                    Intent: graphql
-                    User question: Retrieve 10 most liquid pools
-                    Intent: graphql
-                    User question: top 10 active pools ordered by USD volume
-                    Intent: graphql
+                    [Examples for dbquery type of questions]
+                    User question: Can you give me the db_name for db_id 1009410?
+                    Intent: dbquery
+                    User question: Give me the moniker for Twentieth-Century Drama
+                    Intent: dbquery
+                    User question: Categorize the db_names into different topics
+                    Intent: dbquery
 
-                    [Examples for documents type of questions]
-                    Intent: documents
-                    User question: Tell me how performance reviews are conducted
-                    Intent: documents
-                    User question: What is our mission ?
-                    Intent: documents
-                    User question: What are my Healthcare Benefits for Northwinds ?
-                    Intent: documents
                     Per user query what is the Intent?
                     Intent:");
 
-            chatHistory.AddUserMessage("top 10 active pools");
-            chatHistory.AddAssistantMessage("graphql");
-            chatHistory.AddUserMessage("What is our data security policy?");
-            chatHistory.AddAssistantMessage("documents");
+            chatHistory.AddUserMessage("What is the moniker for db_id 2 ?");
+            chatHistory.AddAssistantMessage("dbquery");
+            chatHistory.AddUserMessage("What is the db_id for House of Commons?");
+            chatHistory.AddAssistantMessage("dbquery");
             chatHistory.AddUserMessage(query);
 
             var executionSettings = new OpenAIPromptExecutionSettings()

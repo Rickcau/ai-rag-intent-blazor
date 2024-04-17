@@ -4,6 +4,7 @@ using Azure;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -11,25 +12,22 @@ namespace api_ai_rag_intent.Services
 {
     internal class IndexSchema
     {
-        [JsonPropertyName("chunk_id")]
-        public string ChunkId { get; set; } = string.Empty;
+        [JsonPropertyName("moniker")]
+        public string Moniker { get; set; } = string.Empty;
 
-        [JsonPropertyName("parent_id")]
-        public string ParentId { get; set; } = string.Empty;
+        [JsonPropertyName("db_id")]
+        public string DbId { get; set; } = string.Empty;
 
-        [JsonPropertyName("chunk")]
-        public string Chunk { get; set; } = string.Empty;
+        [JsonPropertyName("db_name")]
+        public string DbName { get; set; } = string.Empty;
 
-        [JsonPropertyName("title")]
-        public string Title { get; set; } = string.Empty;
-
-        [JsonPropertyName("vector")]
-        public ReadOnlyMemory<float> Vector { get; set; }
+        [JsonPropertyName("db_name_vector")]
+        public ReadOnlyMemory<float> DbNameVector { get; set; }
     }
 
     internal class AzureAISearchService : IAzureAISearchService
     {
-        private readonly List<string> _defaultVectorFields = new() { "vector" };
+        private readonly List<string> _defaultVectorFields = new() { "db_name_vector" };
 
         private readonly SearchIndexClient _indexClient;
 
@@ -50,10 +48,11 @@ namespace api_ai_rag_intent.Services
             {
                 VectorSearch = new()
                 {
-                    Queries = { new VectorizedQuery(embedding.ToArray()) { KNearestNeighborsCount = k, Fields = { "vector" } } }
+                    Queries = { new VectorizedQuery(embedding.ToArray()) { Fields = { "db_name_vector" } } }
                 },
+                QueryType = SearchQueryType.Full,
                 Size = k,
-                Select = { "title", "chunk" },
+                Select = { "moniker", "db_id", "db_name"  },
             };
 
             SearchResults<SearchDocument> response;
@@ -75,10 +74,17 @@ namespace api_ai_rag_intent.Services
             await foreach (SearchResult<SearchDocument> result in response.GetResultsAsync())
             {
                 count++;
-                Console.WriteLine($"Title: {result.Document["title"]}");
+                Console.WriteLine($"Moniker: {result.Document["moniker"]}");
+                Console.WriteLine($"Db_Id: {result.Document["db_id"]}");
+                Console.WriteLine($"Db_Name: {result.Document["db_name"]}");
                 Console.WriteLine($"Score: {result.Score}\n");
-                Console.WriteLine($"Content: {result.Document["chunk"]}");
-                content.AppendLine(result.Document["chunk"].ToString() ?? string.Empty);
+                var thefields = "Moniker: " + result.Document["moniker"] + ", Db_Id: " + result.Document["db_id"] + ", Db_Name: " + result.Document["db_name"];
+                //content.AppendLine("document:");
+                //var thefields = "Moniker: " + result.Moniker + "Db_Id: " + result.DbId + "Db_Name: " + result.DbName;
+                //content.AppendLine(thefields);
+                //content.AppendLine("DB_Name: " + result.DbName);
+
+                content.AppendLine(thefields ?? string.Empty);
             }
             Console.WriteLine($"Total Results: {count}");
 
@@ -107,7 +113,7 @@ namespace api_ai_rag_intent.Services
                         QueryAnswer = new(QueryAnswerType.Extractive),
                     },
                     QueryType = SearchQueryType.Semantic,
-                    Select = { "title", "chunk", },
+                    Select = { "moniker", "db_id", "db_name" },
 
                 };
 
@@ -124,14 +130,15 @@ namespace api_ai_rag_intent.Services
                     }
                 }
                 var sortedResults = results
-                    .OrderByDescending(result => result.ChunkId)
+                    .OrderByDescending(result => result.DbId)
                     .Take(3)
                     .ToList();
                 foreach (var result in sortedResults)
                 {
-                    content.AppendLine("documents:");
-                    content.AppendLine(result.Chunk);
-                    content.AppendLine("Title: " + result.Title);
+                    content.AppendLine("document:");
+                    var thefields = "Moniker: " + result.Moniker + "Db_Id: " + result.DbId + "Db_Name: " + result.DbName;
+                    content.AppendLine(thefields);
+                    content.AppendLine("DB_Name: " + result.DbName);
                 }
 
             }
@@ -141,5 +148,97 @@ namespace api_ai_rag_intent.Services
             }
             return content.ToString();
         }
-    }
+
+        public async Task<string> HybridSearchAsync(ReadOnlyMemory<float> embedding, string query, string index, int k = 100)
+        {
+            StringBuilder content = new StringBuilder();
+
+            SearchResults<SearchDocument> response;
+            try
+            {
+                // Get client for search operations
+                SearchClient searchClient = this._indexClient.GetSearchClient(index);
+
+                // Perform the hybrid search combining text fields and vector field
+                var searchOptions = new SearchOptions
+                {
+                    // Filter = query, // Add text query filter
+                    QueryType = SearchQueryType.Full,
+                    Size = 80,
+                    Select = { "moniker", "db_id", "db_name" }
+                };
+
+                // Add vector search query if embedding is provided
+                //if (embedding.Length > 0)
+                //{
+                //    searchOptions.VectorSearch = new()
+                //    {
+                //        Queries = { new VectorizedQuery(embedding.ToArray()) { Fields = { "db_name_vector" } } }
+                //    };
+                //}
+                // searchOptions.OrderBy.Add("db_id asc"); none of the fields in the index are sortable
+                response = await searchClient.SearchAsync<SearchDocument>(query, searchOptions); // Use "*" to search all documents
+            }
+            catch (Exception ex)
+            {
+                // Log exception details here
+                Console.WriteLine(ex.Message);
+                throw; // Re-throw the exception to propagate it further
+            }
+
+            int count = 0;
+            await foreach (SearchResult<SearchDocument> result in response.GetResultsAsync())
+            {
+                count++;
+                Console.WriteLine($"Moniker: {result.Document["moniker"]}");
+                Console.WriteLine($"Db_Id: {result.Document["db_id"]}");
+                Console.WriteLine($"Db_Name: {result.Document["db_name"]}");
+                Console.WriteLine($"Score: {result.Score}\n");
+                var thefields = "Moniker: " + result.Document["moniker"] + ", Db_Id: " + result.Document["db_id"] + ", Db_Name: " + result.Document["db_name"];
+
+                content.AppendLine(thefields ?? string.Empty);
+            }
+            Console.WriteLine($"Total Results: {count}");
+
+            return content.ToString();
+        }
+
+        public async Task<string> HybridSearch2Async(ReadOnlyMemory<float> embedding, string query, string index, int k = 100)
+        {
+            //***
+            // This is a combination of a semantic and vector search
+            StringBuilder content = new StringBuilder();
+          
+            SearchClient searchClient = this._indexClient.GetSearchClient(index);
+
+            //SearchResults<IndexSchema> response;
+            //var results = searchClient.Search(query);
+           // Response<SearchResults<IndexSchema>> response = await searchClient.SearchAsync<IndexSchema>(query);
+
+            // Perform search request
+            Response<SearchResults<IndexSchema>> response = await searchClient.SearchAsync<IndexSchema>(query);
+            List<IndexSchema> results = new();
+            // Collect search results
+            int count = 0;
+            await foreach (SearchResult<IndexSchema> result in response.Value.GetResultsAsync())
+            {
+                if (result.SemanticSearch.RerankerScore > 0.5 || result.Score > 0.03)
+                {
+                    results.Add(result.Document);
+                    //content.AppendLine(result.Document.ToString());
+                }
+                count++;
+                Console.WriteLine($@"Moniker: {result.Document.Moniker}");
+                Console.WriteLine($@"Db_Id: {result.Document.DbId}");
+                Console.WriteLine($@"Db_Name: {result.Document.DbName}");
+                Console.WriteLine($"Score: {result.Score}\n");
+                var thefields = "Moniker: " + result.Document.Moniker + ", Database ID: " + result.Document.DbId + ", Db_Name: " + result.Document.DbName + "\n";
+                content.AppendLine(thefields ?? string.Empty);
+            }
+            Console.WriteLine($"Total Results: {count}");
+
+            return content.ToString();
+
+        }
+}
 }
