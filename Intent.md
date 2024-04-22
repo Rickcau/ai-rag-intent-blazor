@@ -9,3 +9,11 @@ So, while intent classification has been a topic in the AI and ML space for quit
 
 ## Great Article on Intent Classification
 I would highly recommending [read this article](https://medium.com/aimonks/intent-classification-generative-ai-based-application-architecture-3-79d2927537b4) which covers the topic very well.
+
+## Quorum Approach
+I have implemented a [static intent.cs](./api-ai-rag-intent/Util/Intent.cs) class that takes advantage of ResultsPerPrompt which allows us to use a Quorum approach.  By setting ResultsPerPrompt to 3 this allows the model to leverage the multiple classifiers to predict the intent of the user input to arrive at a final decision.  The result is a much are accurate way to perform intent classification as you can now use the results of the quorum to arrive at a final decision.
+
+The concept of using a quorum to detect intent in AI is akin to ensemble learning techniques, where multiple models or components are used to make a collective decision. In the context of intent detection, a quorum approach involves employing multiple classifiers or models to predict the intent of a user input, and then combining their predictions to arrive at a final decision.
+
+Using a quorum approach can enhance the robustness and reliability of intent detection systems by reducing the impact of individual classifier errors or biases. It's particularly useful in situations where a single classifier may struggle due to ambiguity in the user input or variations in language use.
+
