@@ -8,7 +8,7 @@ The goal is to provide a super simple UI (somthing other than React, NextJS or o
 
 ## Patterns 
 - RAG (Retreval Augmentation Generation) using Semantic + Vector Seach
-- [Intent Classification / Recognition](./Intent.md)
+- [Intent Classification / Recognition](./Intent.md) <- I highly recommend reading this.
 - SK Functions & Plugins
 
 ## Technologies
