@@ -5,15 +5,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Components\MyFileInput.razor.css" />
+    <Compile Remove="BlazorChat\bin\**" />
+    <Compile Remove="BlazorChat\obj\**" />
+    <Content Remove="BlazorChat\bin\**" />
+    <Content Remove="BlazorChat\obj\**" />
+    <EmbeddedResource Remove="BlazorChat\bin\**" />
+    <EmbeddedResource Remove="BlazorChat\obj\**" />
+    <None Remove="BlazorChat\bin\**" />
+    <None Remove="BlazorChat\obj\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Components\MyFileInput.razor.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.3" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BlazorChat\" />
   </ItemGroup>
 </Project>
 
