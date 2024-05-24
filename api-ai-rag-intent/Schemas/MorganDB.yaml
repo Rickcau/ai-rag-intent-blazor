@@ -1,0 +1,127 @@
+description: MorganDB contains outage information and information about resources, sites, and applications related to the incident
+tables:
+  - dbo.App_error: 
+    columns:
+      app: 
+      AppID: 
+      Date: 
+      eonid: 
+      error: 
+      site: 
+  - dbo.Autosys: 
+    columns:
+      Autosys_Command: 
+      Autosys_Instance: 
+      Autosys_Schedule: 
+      EONID: 
+      Job_Name: 
+      LastRetrieved: 
+      Meta: 
+      Proid: 
+      Project: 
+  - dbo.CDSS_TaskDetails: 
+    columns:
+      CreatedBy: 
+      CreatedOn: 
+      DeploymentTarget: 
+      DeploymentType: 
+      DeploymentUnit: 
+      Environment: 
+      Eon: 
+      Meta_Project: 
+      PhaseId: 
+      Project: 
+      Release: 
+      SchduledDate: 
+      ScheduledBy: 
+      ScheduledId: 
+      TaskId: 
+      TCMNumber: 
+      UpdatedBy: 
+      UpdatedOn: 
+  - dbo.DBInstance: 
+    columns:
+      DB_Name: 
+      DB_Platform: 
+      DB_Schema: 
+      DB_Server: 
+      EONID: 
+      LastRetrieved: 
+      Meta: 
+      Project: 
+  - dbo.EonId: 
+    columns:
+      APG_Team_Email: 
+      ASG_Team_Email: 
+      EONID: 
+      GRN: 
+      ITSO: 
+      LastRetrieved: 
+      Meta: 
+      PII: 
+      Project: 
+      TAI_Display_Name: 
+  - dbo.FSN Consumed: 
+    columns:
+      Consumed_Site_Name: 
+      EONID: 
+      IPAE_ProdId: 
+      LastRetrieved: 
+      Meta: 
+      Project: 
+  - dbo.Incident: 
+    columns:
+      eonid_impacted: 
+      eonid_prb: 
+      inc_assignment_group: 
+      inc_closed_at: 
+      inc_incident_state: 
+      inc_number: 
+      inc_opened_at: 
+      inc_short_description: 
+      inc_u_detailed_resolution_code: 
+      inc_u_detailed_symptom_code: 
+      inc_u_detection_method: 
+      inc_u_impact_severity: 
+      inc_u_incident_end_date: 
+      inc_u_incident_start_date: 
+      insert_time: 
+      update_time: 
+  - dbo.LoadBalancer: 
+    columns:
+      EONID: 
+      IP: 
+      LastRetrieved: 
+      LB_Cluster: 
+      LB_Virtual: 
+      LB_Virtual_Name: 
+      LB_Virtual_Port: 
+      Meta: 
+      Project: 
+  - dbo.Servers: 
+    columns:
+      Aquilon_Personality: 
+      DMZ: 
+      EONID: 
+      LastRetrieved: 
+      Meta: 
+      MS_Build_Name: 
+      Name: 
+      OS_Detail: 
+      OS_Type: 
+      Project: 
+      SAN_Allocation: 
+      SAN_Consumed: 
+      SAN_Pool: 
+  - dbo.Site: 
+    columns:
+      Application: 
+      EONID: 
+      LastRetrieved: 
+      Meta: 
+      Pool: 
+      Port: 
+      Proid: 
+      Project: 
+      URL: 
+references:

@@ -13,6 +13,7 @@ namespace api_ai_rag_intent.Util
         // we then take the quorum of the 3 results and use that for the intent
         public static async Task<string> GetIntent(IChatCompletionService chat, string query)
         {
+            return "sql";
             // Keep the ChatHistory local since we only need it to detect the Intent
             ChatHistory chatHistory = new ChatHistory();
             var whatistheintent = "not_found"; // default

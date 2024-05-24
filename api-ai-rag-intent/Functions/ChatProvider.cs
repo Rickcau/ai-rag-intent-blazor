@@ -2,11 +2,13 @@ using api_ai_rag_intent.Models;
 using api_ai_rag_intent.Util;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.Net;
+using System.Reflection;
 using System.Text.Json;
 
 namespace api_ai_rag_intent.Functions
@@ -14,12 +16,28 @@ namespace api_ai_rag_intent.Functions
     public class ChatProvider
     {
         private readonly ILogger<ChatProvider> _logger;
-        private readonly Kernel _kernel;
+        private static Kernel? _kernel;
         private readonly IChatCompletionService _chat;
         private readonly ChatHistory _chatHistory;
+        private static IConfigurationRoot _config;
         private readonly string _aiSearchIndex = Helper.GetEnvironmentVariable("AISearchIndex");
         private readonly string _semanticSearchConfigName = Helper.GetEnvironmentVariable("AISearchSemanticConfigName");
 
+        public static Kernel Kernel
+        {
+            get
+            {
+                return _kernel!;
+            }
+        }
+
+        public static IConfigurationRoot Configuration
+        {
+            get
+            {
+                return _config;
+            }
+        }
 
         public ChatProvider(ILogger<ChatProvider> logger, Kernel kernel, IChatCompletionService chat, ChatHistory chatHistory)
         {
@@ -27,25 +45,20 @@ namespace api_ai_rag_intent.Functions
             _kernel = kernel;
             _chat = chat;
             _chatHistory = chatHistory;
+            _config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .Build();
         }
 
         [Function("ChatProvider")]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
-            // Request body example:
-            /*
-                {
-                    "userId": "stevesmith@contoso.com",
-                    "sessionId": "12345678",
-                    "prompt": "Hello, What can you do for me?"
-                }
-            */
-            // Example querys for GraphQL:
-            Console.WriteLine("Example 1: top 10 active pools");
-            Console.WriteLine("Example 2: Retrieve 10 most liquid pools");
-
             _chatHistory.Clear();
             _logger.LogInformation("C# HTTP SentimentAnalysis trigger function processed a request.");
+
+            _chatHistory.AddUserMessage("Do NOT format responses as markdown");
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var chatRequest = JsonSerializer.Deserialize<ChatProviderRequest>(requestBody);
@@ -71,7 +84,7 @@ namespace api_ai_rag_intent.Functions
                         _chatHistory.AddUserMessage(chatRequest.prompt);
                         break;
                     }
-                case "graphql":
+                case "sql":
                     {
                         // Now that I know the intent of the question is graphql related, I could just call the plugin directly
                         // but, since I have AutoInvokeKernelFunctions enabled I can just let SK detect that it needs to call the funciton and let it do it.
@@ -104,8 +117,8 @@ namespace api_ai_rag_intent.Functions
                         //    1. 0x5d342c
                         //    2. 0xb0cdd
                         //    ");
-                        _chatHistory.AddUserMessage(chatRequest.prompt +" Please add newlines and formatting so each item is on a separate line");
-                        Console.WriteLine("Intent: graphql");
+                        _chatHistory.AddUserMessage(chatRequest.prompt);
+                        Console.WriteLine("Intent: sql");
                         break;
                     }
                 case "not_found":

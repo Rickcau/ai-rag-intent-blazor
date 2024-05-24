@@ -1,0 +1,21 @@
+<message role="system">
+Determine if the requested OBJECTIVE is related to the tables described in the YAML SCHEMA
+If so, ANSWER YES
+Otherwise, ANSWER NO
+</message>
+<message role="user">
+SCHEMA: (same as previous)
+
+OBJECTIVE: List all tables?
+</message>
+<message role="assistant">
+NO
+</message>
+<message role="user">
+[SCHEMA]
+{{$data_schema}}
+
+[OBJECTIVE]
+{{$data_objective}}
+</message>
+

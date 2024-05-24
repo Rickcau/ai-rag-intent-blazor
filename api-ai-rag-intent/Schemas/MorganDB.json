@@ -1,0 +1,473 @@
+{
+  "Name": "morgandb",
+  "Description": "MorganDB contains outage information and information about resources, sites, and applications related to the incident",
+  "Platform": "Microsoft SQL Server",
+  "Tables": [
+    {
+      "Name": "dbo.App_error",
+      "Columns": [
+        {
+          "Name": "app",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "AppID",
+          "Type": "int"
+        },
+        {
+          "Name": "Date",
+          "Type": "date"
+        },
+        {
+          "Name": "eonid",
+          "Type": "int"
+        },
+        {
+          "Name": "error",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "site",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.Autosys",
+      "Columns": [
+        {
+          "Name": "Autosys_Command",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Autosys_Instance",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Autosys_Schedule",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "Job_Name",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Proid",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.CDSS_TaskDetails",
+      "Columns": [
+        {
+          "Name": "CreatedBy",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "CreatedOn",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "DeploymentTarget",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "DeploymentType",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "DeploymentUnit",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Environment",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Eon",
+          "Type": "int"
+        },
+        {
+          "Name": "Meta_Project",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "PhaseId",
+          "Type": "tinyint"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Release",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "SchduledDate",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "ScheduledBy",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "ScheduledId",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "TaskId",
+          "Type": "int"
+        },
+        {
+          "Name": "TCMNumber",
+          "Type": "int"
+        },
+        {
+          "Name": "UpdatedBy",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "UpdatedOn",
+          "Type": "datetime2"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.DBInstance",
+      "Columns": [
+        {
+          "Name": "DB_Name",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "DB_Platform",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "DB_Schema",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "DB_Server",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.EonId",
+      "Columns": [
+        {
+          "Name": "APG_Team_Email",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "ASG_Team_Email",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "GRN",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "ITSO",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "PII",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "TAI_Display_Name",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.FSN Consumed",
+      "Columns": [
+        {
+          "Name": "Consumed_Site_Name",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "IPAE_ProdId",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.Incident",
+      "Columns": [
+        {
+          "Name": "eonid_impacted",
+          "Type": "int"
+        },
+        {
+          "Name": "eonid_prb",
+          "Type": "int"
+        },
+        {
+          "Name": "inc_assignment_group",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_closed_at",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_incident_state",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_number",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_opened_at",
+          "Type": "date"
+        },
+        {
+          "Name": "inc_short_description",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_u_detailed_resolution_code",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_u_detailed_symptom_code",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_u_detection_method",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_u_impact_severity",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_u_incident_end_date",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "inc_u_incident_start_date",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "insert_time",
+          "Type": "date"
+        },
+        {
+          "Name": "update_time",
+          "Type": "date"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.LoadBalancer",
+      "Columns": [
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "IP",
+          "Type": "time"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "LB_Cluster",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "LB_Virtual",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "LB_Virtual_Name",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "LB_Virtual_Port",
+          "Type": "int"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.Servers",
+      "Columns": [
+        {
+          "Name": "Aquilon_Personality",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "DMZ",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "MS_Build_Name",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Name",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "OS_Detail",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "OS_Type",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "SAN_Allocation",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "SAN_Consumed",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "SAN_Pool",
+          "Type": "nvarchar"
+        }
+      ]
+    },
+    {
+      "Name": "dbo.Site",
+      "Columns": [
+        {
+          "Name": "Application",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "EONID",
+          "Type": "int"
+        },
+        {
+          "Name": "LastRetrieved",
+          "Type": "datetime2"
+        },
+        {
+          "Name": "Meta",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Pool",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Port",
+          "Type": "int"
+        },
+        {
+          "Name": "Proid",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "Project",
+          "Type": "nvarchar"
+        },
+        {
+          "Name": "URL",
+          "Type": "nvarchar"
+        }
+      ]
+    }
+  ]
+}
