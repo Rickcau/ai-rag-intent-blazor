@@ -1,0 +1,44 @@
+﻿@using Azure.Storage.Blobs;
+@using Azure.Storage.Blobs.Models;
+@page "/fileupload2"
+
+
+
+
+
+<p>
+    <label>
+        <input type="file" onchange="@OnInputFileChange" />
+        <InputFile class="shareButton" style="display:none;" OnChange="@OnInputFileChange" />
+    </label>
+</p>
+
+<div class="form-group row">
+    <label for="image" class="col-md-2 col-form-label">Image:</label>
+    <div class="col-md-10">
+        <p>This is a test</p>
+    </div>
+</div>
+
+@code {
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var file = e.GetMultipleFiles()[0];
+        var name = file.Name;
+        var type = file.ContentType;
+
+        var connectionstring = "connection_string";
+        // BlobServiceClient blobServiceClient = new BlobServiceClient(connectionstring);
+        // BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("container_name");
+        // await blobContainerClient.CreateIfNotExistsAsync();
+        // BlobClient blobClent = blobContainerClient.GetBlobClient(name);
+        // BlobHttpHeaders httpheaders = new BlobHttpHeaders()
+        //     {
+        //         ContentType = type
+        //     };
+        // var res = await blobClent.UploadAsync(file.OpenReadStream(), httpheaders);
+    }
+}
+
+
+<input type="file" onChange={this.handleFile.bind(this)} />

@@ -12,10 +12,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api-ai-rag-intent", "api-ai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChat", "blazor\BlazorChat.csproj", "{731B4543-6EE6-411A-80AE-9B78E3068128}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nl2Sql.Library", "nl2sql.library\Nl2Sql.Library.csproj", "{ACCD331D-9B75-40CD-A27A-79120A80038B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nl2Sql.Harness", "nl2sql.harness\Nl2Sql.Harness.csproj", "{EE56B4CB-A021-4E9D-8FE2-21C4073CAB10}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,14 +26,6 @@ Global
 		{731B4543-6EE6-411A-80AE-9B78E3068128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{731B4543-6EE6-411A-80AE-9B78E3068128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{731B4543-6EE6-411A-80AE-9B78E3068128}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACCD331D-9B75-40CD-A27A-79120A80038B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACCD331D-9B75-40CD-A27A-79120A80038B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACCD331D-9B75-40CD-A27A-79120A80038B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACCD331D-9B75-40CD-A27A-79120A80038B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE56B4CB-A021-4E9D-8FE2-21C4073CAB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE56B4CB-A021-4E9D-8FE2-21C4073CAB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE56B4CB-A021-4E9D-8FE2-21C4073CAB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE56B4CB-A021-4E9D-8FE2-21C4073CAB10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
