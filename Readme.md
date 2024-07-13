@@ -1,5 +1,8 @@
 # api-ai-rag-intent-blazor
 
+## Important Note
+I am not using DevContainers because I have an issue with Docker that will requirement to reformat my laptop, and I simply have not had time to do that at the moment.
+
 ## Summary
 In this example we leverage a Blazor Web App as the front which leverages our Azure Function for AI Chat Services.  Big thanks to Bill Reiss for the Blazor App (Web Assembly).  We will also be adding a Blazor Server Side Web App and additional features over time.
 
